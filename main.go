@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/sarmirim/gofukurokuju/reddit"
+	"github.com/Sarmirim/gofukurokuju/reddit"
 )
 
 // Req - struct to parse json from request
