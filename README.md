@@ -1,6 +1,3 @@
-docker build .
-
-
 environment
 ```
 go tool dist list
