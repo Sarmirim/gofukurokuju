@@ -1,4 +1,4 @@
-module github.com/sarmirim/gofukurokuju
+module github.com/Sarmirim/gofukurokuju
 
 go 1.16
 
