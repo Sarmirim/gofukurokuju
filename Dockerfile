@@ -7,6 +7,12 @@
 FROM golang:alpine AS builder
 RUN apk update
 RUN apk add -U --no-cache ca-certificates && update-ca-certificates
+# WORKDIR /go/pkg/mod/github.com/Sarmirim/gofukurokuju
+# COPY . .
+# RUN go install .
+
+# RUN go install github.com/Sarmirim/gofukurokuju@develop
+
 # RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
 # WORKDIR /gofukurokuju
 # WORKDIR $GOPATH/src/myapp/
