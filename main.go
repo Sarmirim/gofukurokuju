@@ -37,13 +37,18 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
-		w.Write([]byte("Received a POST request\n"))
+		// w.Write([]byte("Received a POST request\n"))
+		w.Write([]byte(`Use only GET request`))
 	}
 	for k, v := range r.URL.Query() {
 		fmt.Printf("%s: %s\n", k, v)
 	}
 
-	w.Write([]byte("Hello"))
+	w.Write([]byte(`To use gofukurokuju please use localhost:port/api.
+Get request with body like: 
+{
+	"url": "https://www.reddit.com/r/memes/comments/ltkhxe/well/"
+}`))
 }
 
 // API -
