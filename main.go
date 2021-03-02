@@ -10,6 +10,9 @@ import (
 	"github.com/Sarmirim/gofukurokuju/reddit"
 )
 
+// Port - Not fan of read .env with custom library
+var Port rune = 9876
+
 // Req - struct to parse json from request
 type Req struct {
 	URL string
@@ -20,13 +23,25 @@ type Req struct {
 func main() {
 	http.HandleFunc("/", Hello)
 	http.HandleFunc("/api", API)
-	http.ListenAndServe(":9876", nil)
+	http.ListenAndServe(fmt.Sprintf(":%d", Port), nil)
 }
+
+// FirstPart -
+var FirstPart string = fmt.Sprintf("To use gofukurokuju please use localhost:%d/api", Port)
+
+// SecondPart -
+var SecondPart string = `
+Get request with body like: 
+{
+"url": "https://www.reddit.com/r/memes/comments/ltkhxe/well/"
+}`
 
 // Hello -
 func Hello(w http.ResponseWriter, r *http.Request) {
+
 	if r.URL.Path != "/" {
-		http.NotFound(w, r)
+		// http.NotFound(w, r)
+		w.Write([]byte(FirstPart + SecondPart))
 		return
 	}
 
@@ -37,13 +52,14 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
-		w.Write([]byte("Received a POST request\n"))
+		// w.Write([]byte("Received a POST request\n"))
+		w.Write([]byte(`Use only GET request`))
 	}
 	for k, v := range r.URL.Query() {
 		fmt.Printf("%s: %s\n", k, v)
 	}
 
-	w.Write([]byte("Hello"))
+	w.Write([]byte(FirstPart + SecondPart))
 }
 
 // API -
@@ -51,7 +67,7 @@ func API(w http.ResponseWriter, r *http.Request) {
 	req := Req{}
 
 	if r.URL.Path != "/api" {
-		http.NotFound(w, r)
+		w.Write([]byte(FirstPart + SecondPart))
 		return
 	}
 
@@ -69,7 +85,13 @@ func API(w http.ResponseWriter, r *http.Request) {
 	}
 	jsonErr := json.Unmarshal(reqBody, &req)
 	if jsonErr != nil {
-		log.Fatal(jsonErr)
+		js, err := json.Marshal(reddit.Data{})
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write(js)
+		return
 	}
 
 	var ans reddit.Data = MyRequest(req.URL)
@@ -87,32 +109,33 @@ func API(w http.ResponseWriter, r *http.Request) {
 
 // MyRequest -
 func MyRequest(link string) reddit.Data {
+	problem := reddit.Data{}
 	post := []reddit.Post{}
 	client := &http.Client{}
 	lastPart := ".json?raw_json=1"
 	req, err := http.NewRequest("GET", link+lastPart, nil)
 	if err != nil {
 		log.Fatalln(err)
+		return reddit.Data{}
 	}
 
 	req.Header.Set("User-Agent", "GO Enigma")
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatalln(err)
+		return problem
 	}
 
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatalln(err)
+		return problem
 	}
 
 	jsonErr := json.Unmarshal(body, &post)
 	if jsonErr != nil {
-		log.Fatal(jsonErr)
+		return problem
 	}
 	answer := post[0].Data.Children[0].Data
 	return answer
-	// log.Println(post[0].Data.Children[0].Data.URL)
 }
