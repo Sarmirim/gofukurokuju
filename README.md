@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-environment
-=======
 # Quickstart
 ```
 git clone https://github.com/Sarmirim/gofukurokuju/
@@ -10,7 +7,6 @@ go build .
 
 Check environment
 (*system = windows/linux/...)
->>>>>>> develop
 ```
 go tool dist list
 go env GOOS GOARCH
