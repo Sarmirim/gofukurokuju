@@ -10,6 +10,9 @@ import (
 	"github.com/Sarmirim/gofukurokuju/reddit"
 )
 
+// Port - Not fan of read .env with custom library
+var Port string = ":9876"
+
 // Req - struct to parse json from request
 type Req struct {
 	URL string
@@ -20,7 +23,7 @@ type Req struct {
 func main() {
 	http.HandleFunc("/", Hello)
 	http.HandleFunc("/api", API)
-	http.ListenAndServe(":9876", nil)
+	http.ListenAndServe(Port, nil)
 }
 
 // Hello -
