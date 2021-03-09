@@ -1,6 +1,21 @@
 package reddit
 
-// Source - (best?) quality
+// Reddit_video -
+type Reddit_video struct {
+	Bitrate_kbps string
+	Fallback_url int
+	Height       int
+	Width        int
+	Duration     int
+	Is_gif       string
+}
+
+// Media -
+type Media struct {
+	Reddit_video Reddit_video
+}
+
+// Source - best? (atleast source) quality
 type Source struct {
 	URL    string
 	Width  int
@@ -29,9 +44,11 @@ type Data struct {
 	Ups                    int
 	Thumbnail              string
 	Preview                Preview
+	Over_18                bool
 	Url_overridden_by_dest string
 	URL                    string
 	Created_utc            float64
+	Permalink              string
 	// time.Unix(Created_utc float64, 0)
 }
 
