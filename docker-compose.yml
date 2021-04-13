@@ -1,6 +1,6 @@
 services:
-  db:
+  server:
     build: ./
     ports:
-      - "9876:9876"
+      - "${PORT}:9876"
     restart: always
