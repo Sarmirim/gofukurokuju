@@ -1,6 +1,0 @@
-services:
-  server:
-    build: ./
-    ports:
-      - "${PORT}:9876"
-    restart: always
