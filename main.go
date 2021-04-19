@@ -6,11 +6,26 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
+	"time"
 
-	"github.com/Sarmirim/gofukurokuju/reddit"
+	"github.com/sarmirim/gofukurokuju/reddit"
 )
 
-// Port - Not fan of read .env with custom library
+// func getENV(name string) (string, error) {
+// 	value := os.Getenv(name)
+// 	if value == "" {
+// 		return value, errors.New("getENV: environment variable empty")
+// 	}
+// 	return value, nil
+// }
+
+func getENV(name string) string {
+	value := os.Getenv(name)
+	return value
+}
+
+// Port - server port
 var Port rune = 9876
 
 // Req - struct to parse json from request
@@ -27,7 +42,7 @@ func main() {
 }
 
 // FirstPart -
-var FirstPart string = fmt.Sprintf("To use gofukurokuju please use localhost:%d/api", Port)
+var FirstPart string = fmt.Sprintf("To use gofukurokuju please use /api")
 
 // SecondPart -
 var SecondPart string = `
@@ -38,7 +53,6 @@ Get request with body like:
 
 // Hello -
 func Hello(w http.ResponseWriter, r *http.Request) {
-
 	if r.URL.Path != "/" {
 		// http.NotFound(w, r)
 		w.Write([]byte(FirstPart + SecondPart))
@@ -55,6 +69,7 @@ func Hello(w http.ResponseWriter, r *http.Request) {
 		// w.Write([]byte("Received a POST request\n"))
 		w.Write([]byte(`Use only GET request`))
 	}
+
 	for k, v := range r.URL.Query() {
 		fmt.Printf("%s: %s\n", k, v)
 	}
@@ -101,7 +116,7 @@ func API(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.Write(js)
 	// w.Write(reqBody)
 	print(string(reqBody))
@@ -119,7 +134,7 @@ func MyRequest(link string) reddit.Data {
 		return reddit.Data{}
 	}
 
-	req.Header.Set("User-Agent", "GO Enigma")
+	req.Header.Set("User-Agent", "GO Enigma23")
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -136,6 +151,8 @@ func MyRequest(link string) reddit.Data {
 	if jsonErr != nil {
 		return problem
 	}
+
 	answer := post[0].Data.Children[0].Data
-	return answer
+	answer.UTC = time.Unix(int64(answer.Created_utc), 0)
+	return *answer
 }

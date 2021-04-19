@@ -1,5 +1,7 @@
 package reddit
 
+import "time"
+
 // Reddit_video -
 type Reddit_video struct {
 	Bitrate_kbps string
@@ -47,15 +49,20 @@ type Data struct {
 	Over_18                bool
 	Url_overridden_by_dest string
 	URL                    string
-	Created_utc            float64
+	Created_utc            float64 // int64 doesn't work
 	Permalink              string
+	UTC                    time.Time
 	// time.Unix(Created_utc float64, 0)
 }
+
+// func (m Data.URL) Name() string {
+// 	return string(m.N)
+// }
 
 // Children - "Parent" for data
 type Children struct {
 	Kind string
-	Data Data
+	Data *Data
 }
 
 // Data0 JSON root for post or comment sections
