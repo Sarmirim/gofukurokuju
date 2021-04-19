@@ -1,7 +1,5 @@
 package reddit
 
-import "time"
-
 // Reddit_video -
 type Reddit_video struct {
 	Bitrate_kbps string
@@ -40,24 +38,23 @@ type Preview struct {
 
 // Data - real data for post
 type Data struct {
-	Subreddit              string
-	Title                  string
-	Author                 string
-	Ups                    int
-	Thumbnail              string
-	Preview                Preview
-	Over_18                bool
-	Url_overridden_by_dest string
-	URL                    string
-	Created_utc            float64 // int64 doesn't work
-	Permalink              string
-	UTC                    time.Time
-	// time.Unix(Created_utc float64, 0)
+	Subreddit        string  `json:"subreddit"`
+	Title            string  `json:"title"`
+	Author           string  `json:"author"`
+	Ups              int     `json:"ups"`
+	Thumbnail        string  `json:"thumbnail"`
+	Thumbnail_width  int     `json:"thumbnail_width"`
+	Thumbnail_height int     `json:"thumbnail_height"`
+	URL              string  `json:"url"`
+	Created_utc      float64 `json:"created_utc"` // int64 doesn't work
+	Is_video         bool    `json:"is_video"`
+	// Permalink        string
+	// Preview          Preview
+	// Over_18          bool
+	// Url_overridden_by_dest string
+	// UTC                    time.Time
+	// // time.Unix(Created_utc float64, 0)
 }
-
-// func (m Data.URL) Name() string {
-// 	return string(m.N)
-// }
 
 // Children - "Parent" for data
 type Children struct {
@@ -80,21 +77,3 @@ type Post struct {
 	Kind string
 	Data Data0
 }
-
-// type Epoch int64
-
-// func (t Epoch) MarshalJSON() ([]byte, error) {
-//     strDate := time.Time(time.Unix(int64(t), 0)).Format(time.RFC3339)
-//     out := []byte(`"` + strDate + `"`)
-//     return out, nil
-// }
-
-// func (t *Epoch) UnmarshalJSON(b []byte) (err error) {
-//     s := strings.Trim(string(b), "\"")
-//     q, err := time.Parse(time.RFC3339, s)
-//     if err != nil {
-//         return err
-//     }
-//     *t = Epoch(q.Unix())
-//     return nil
-// }
