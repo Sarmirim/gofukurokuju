@@ -1,0 +1,19 @@
+name: Auto Build/Push Release
+
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  build_push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build and push release Docker image to GHCR
+        run: |
+          echo ${{ secrets.GHCR_PAT }} | docker login ghcr.io -u sarmirim --password-stdin
+          docker build . --tag ghcr.io/sarmirim/gofukurokuju:${GITHUB_REF#refs/*/}
+          docker push ghcr.io/sarmirim/gofukurokuju:${GITHUB_REF#refs/*/}
+

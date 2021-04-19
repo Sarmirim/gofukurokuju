@@ -1,5 +1,0 @@
-GET http://localhost:9876/api HTTP/1.1
-
-{
-    "url": "https://www.reddit.com/r/memes/comments/ltkhxe/well/"
-}
