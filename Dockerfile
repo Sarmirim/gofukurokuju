@@ -1,16 +1,10 @@
+FROM golang:1.16-alpine AS build
+WORKDIR /src/
+COPY main.go go.* /src/
+COPY ./reddit /src/reddit
+RUN GO111MODULE=on CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /src/out/gofukurokuju .
+
 FROM scratch
-# Import the Certificate-Authority certificates for enabling HTTPS. (Certificates=(9/march/2021))
-COPY ./etc/ssl/certs/ /etc/ssl/certs/
-COPY gofukurokuju gofukurokuju
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /src/out/gofukurokuju /
 ENTRYPOINT [ "./gofukurokuju" ]
-
-# # To use with newest certificates
-# FROM golang:alpine AS builder
-# RUN apk update
-# RUN apk add -U --no-cache ca-certificates && update-ca-certificates
-
-# FROM scratch
-# # Import the Certificate-Authority certificates for enabling HTTPS.
-# COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-# COPY gofukurokuju gofukurokuju
-# ENTRYPOINT [ "./gofukurokuju" ]
