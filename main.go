@@ -6,24 +6,9 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
-	"os"
-	"time"
 
 	"github.com/sarmirim/gofukurokuju/reddit"
 )
-
-// func getENV(name string) (string, error) {
-// 	value := os.Getenv(name)
-// 	if value == "" {
-// 		return value, errors.New("getENV: environment variable empty")
-// 	}
-// 	return value, nil
-// }
-
-func getENV(name string) string {
-	value := os.Getenv(name)
-	return value
-}
 
 // Port - server port
 var Port rune = 9876
@@ -42,7 +27,7 @@ func main() {
 }
 
 // FirstPart -
-var FirstPart string = fmt.Sprintf("To use gofukurokuju please use /api")
+var FirstPart string = "To use gofukurokuju please use /api"
 
 // SecondPart -
 var SecondPart string = `
@@ -153,6 +138,6 @@ func MyRequest(link string) reddit.Data {
 	}
 
 	answer := post[0].Data.Children[0].Data
-	answer.UTC = time.Unix(int64(answer.Created_utc), 0)
+	// answer.UTC = time.Unix(int64(answer.Created_utc), 0)
 	return *answer
 }
