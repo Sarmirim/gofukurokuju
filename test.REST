@@ -1,5 +1,9 @@
 GET http://localhost:9876/api HTTP/1.1
 
 {
-    "url": "https://www.reddit.com/r/memes/comments/ltkhxe/well/"
+    "url": "https://www.reddit.com/r/blackmagicfuckery/comments/mu4lzb/portable_levitation_device"
 }
+
+# {
+#     "url": "https://www.reddit.com/r/blackmagicfuckery/comments/m16z60/the_magic_bottle"
+# }
