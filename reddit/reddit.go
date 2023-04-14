@@ -48,9 +48,10 @@ type Data struct {
 	URL              string  `json:"url"`
 	Created_utc      float64 `json:"created_utc"` // int64 doesn't work
 	Is_video         bool    `json:"is_video"`
-	// Permalink        string
-	// Preview          Preview
-	// Over_18          bool
+	Permalink        string
+	Preview          Preview
+	Over_18          bool
+	Media            bool
 	// Url_overridden_by_dest string
 	// UTC                    time.Time
 	// // time.Unix(Created_utc float64, 0)
@@ -58,22 +59,21 @@ type Data struct {
 
 // Children - "Parent" for data
 type Children struct {
-	Kind string
-	Data *Data
+	Kind string `json:"kind"`
+	Data *Data  `json:"data"`
 }
 
 // Data0 JSON root for post or comment sections
 type Data0 struct {
-	Modhash  string
-	Dist     int
-	Children []Children
-	After    string
-	Before   string
+	// Modhash  string
+	// Dist     int
+	Children []Children `json:"children"`
+	// After    string
+	// Before   string
 }
 
 // Post JSON root
 type Post struct {
-	// Kind  int    `json:"kind"` ~= Kind string
-	Kind string
-	Data Data0
+	Kind string `json:"kind"`
+	Data Data0  `json:"data"`
 }
